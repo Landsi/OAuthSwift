@@ -41,6 +41,7 @@ open class OAuthSwiftHTTPRequest: NSObject, URLSessionDelegate, OAuthSwiftReques
     var successHandler: SuccessHandler?
     var failureHandler: FailureHandler?
     
+    open static var urlSessionConfiguration = URLSessionConfiguration.default
 
     open static var executionContext: (@escaping () -> Void) -> Void = { block in
         return DispatchQueue.main.async(execute: block)
@@ -82,7 +83,7 @@ open class OAuthSwiftHTTPRequest: NSObject, URLSessionDelegate, OAuthSwiftReques
                 return
             }
 
-            self.session = URLSession(configuration: URLSessionConfiguration.default,
+            self.session = URLSession(configuration: OAuthSwiftHTTPRequest.urlSessionConfiguration,
                 delegate: self,
                 delegateQueue: OperationQueue.main)
             self.task = self.session.dataTask(with: self.request!) { (data, response, error) in
